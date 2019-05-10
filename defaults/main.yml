@@ -1,0 +1,6 @@
+---
+# defaults file for ansible-role-upgrade-all-packages
+
+# by default the machine is rebooted if a new kernel is installed
+# set this variable to false to disable the reboot
+upgrade_all_packages_reboot: true

@@ -1,0 +1,45 @@
+---
+# tasks file for ansible-role-upgrade-all-packages
+
+- name: Upgrade all packages in RedHat systems
+  block:
+
+    - name: upgrade all packages (RedHat)
+      yum:
+        name: '*'
+        state: latest
+      register: upgraded_packages
+      tags:
+        - skip_ansible_lint
+
+    - name: Reboot the machine if a new kernel was installed (RedHat)
+      reboot:
+      when: (upgraded_packages.results[0] is search("kernel")) and
+            (upgrade_all_packages_kernel_reboot)
+
+  when: ansible_os_family == "RedHat"
+
+
+- name: Upgrade all packages in Debian systems
+  block:
+
+    - name: Install aptitude is this is a debian/ubuntu system
+      apt:
+        pkg: aptitude
+        state: present
+        update_cache: true
+
+    - name: upgrade all packages (Debian)
+      apt:
+        name: '*'
+        state: latest
+      register: upgraded_packages
+      tags:
+        - skip_ansible_lint
+
+    - name: Reboot the machine if a new kernel was installed (Debian)
+      reboot:
+      when: (upgraded_packages.stdout is search("kernel")) and
+            (upgrade_all_packages_kernel_reboot)
+
+  when: ansible_os_family == "Debian"
