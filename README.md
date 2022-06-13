@@ -15,7 +15,7 @@ Role Variables
 --------------
 
 ```
-upgrade_all_packages_kernel_reboot: true
+upgrade_all_packages_reboot: true
 ```
 
 Dependencies
