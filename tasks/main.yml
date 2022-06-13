@@ -4,25 +4,25 @@
 - name: Upgrade all packages in RedHat systems
   block:
 
-    - name: upgrade all packages (RedHat)
+    - name: RedHat/CentOS | upgrade all packages (RedHat)
       ansible.builtin.yum:
         name: '*'
         state: latest
       tags:
         - skip_ansible_lint
 
-    - name: Make sure yum-utils is installed so we can use command "needs-restarting"
+    - name: RedHat/CentOS | Make sure yum-utils is installed so we can use command "needs-restarting"
       ansible.builtin.yum:
         name: yum-utils
         state: present
 
-    - name: Check if the machine needs a reboot
+    - name: RedHat/CentOS | Check if the machine needs a reboot
       ansible.builtin.command: needs-restarting -r
       ignore_errors: true
       changed_when: false
       register: needs_restarting_output
 
-    - name: Reboot the machine if required
+    - name: RedHat/CentOS | Reboot the machine if required
       ansible.builtin.reboot:
       when:
         - needs_restarting_output.rc != 0
@@ -35,12 +35,12 @@
 - name: Upgrade all packages in Debian systems
   block:
 
-    - name: Install aptitude is this is a debian/ubuntu system
+    - name: Debian/Ubuntu | Install aptitude is this is a debian/ubuntu system
       ansible.builtin.apt:
         pkg: aptitude
         state: present
 
-    - name: upgrade all packages (Debian)
+    - name: Debian/Ubuntu | upgrade all packages (Debian)
       ansible.builtin.apt:
         name: '*'
         state: latest
@@ -48,12 +48,12 @@
       tags:
         - skip_ansible_lint
 
-    - name: Check if file /var/run/reboot-required exists
+    - name: Debian/Ubuntu | Check if file /var/run/reboot-required exists
       ansible.builtin.stat:
         path: /var/run/reboot-required
       register: reboot_required_file
 
-    - name: Reboot the machine if needed
+    - name: Debian/Ubuntu | Reboot the machine if needed
       ansible.builtin.reboot:
       when:
         - reboot_required_file.exists
