@@ -57,7 +57,7 @@
     - name: Debian/Ubuntu | Reboot the machine if needed
       ansible.builtin.reboot:
       when:
-        - reboot_required_file.exists
+        - reboot_required_file.stat.exists
         - upgrade_all_packages_reboot | bool
         - not ansible_virtualization_type == "docker"       # skip reboot if this is a CI test in a container
         - not ansible_virtualization_type == "containerd"   # skip reboot if this is a CI test in a container
