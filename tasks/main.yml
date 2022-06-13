@@ -24,7 +24,10 @@
 
     - name: Reboot the machine if required
       reboot:
-      when: needs_restarting_output.rc != 0
+      when:
+        - needs_restarting_output.rc != 0
+        - not ansible_virtualization_type == "docker"       # skip reboot if this is a CI test in a container
+        - not ansible_virtualization_type == "containerd"   # skip reboot if this is a CI test in a container
 
   when: ansible_os_family == "RedHat"
 
@@ -52,6 +55,9 @@
 
     - name: Reboot the machine if needed
       reboot:
-      when: reboot_required_file.exists
+      when:
+        - reboot_required_file.exists
+        - not ansible_virtualization_type == "docker"       # skip reboot if this is a CI test in a container
+        - not ansible_virtualization_type == "containerd"   # skip reboot if this is a CI test in a container
 
   when: ansible_os_family == "Debian"
