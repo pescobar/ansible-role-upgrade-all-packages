@@ -8,14 +8,23 @@
       yum:
         name: '*'
         state: latest
-      register: upgraded_packages
       tags:
         - skip_ansible_lint
 
-    - name: Reboot the machine if a new kernel was installed (RedHat)
+    - name: Make sure yum-utils is installed so we can use command "needs-restarting"
+      yum:
+        name: yum-utils
+        state: present
+
+    - name: Check if the machine needs a reboot
+      command: needs-restarting -r
+      ignore_errors: true
+      changed_when: false
+      register: needs_restarting_output
+
+    - name: Reboot the machine if required
       reboot:
-      when: (upgraded_packages.results[0] is search("kernel")) and
-            (upgrade_all_packages_kernel_reboot)
+      when: needs_restarting_output.rc != 0
 
   when: ansible_os_family == "RedHat"
 
