@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/pescobar/ansible-role-upgrade-all-packages.svg?branch=master)](https://travis-ci.org/pescobar/ansible-role-upgrade-all-packages)
+[![CI tests](https://github.com/pescobar/ansible-role-upgrade-all-packages/actions/workflows/ci_tests.yml/badge.svg)](https://github.com/pescobar/ansible-role-upgrade-all-packages/actions/workflows/ci_tests.yml)
 [![Ansible Galaxy](https://img.shields.io/badge/galaxy-pescobar.upgrade_all_packages-blue.svg)](https://galaxy.ansible.com/pescobar/upgrade_all_packages)
 
 
