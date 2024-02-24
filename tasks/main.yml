@@ -8,6 +8,7 @@
       ansible.builtin.yum:
         name: '*'
         state: latest
+        update_cache: true
       tags:
         - skip_ansible_lint
 
@@ -40,6 +41,7 @@
       ansible.builtin.apt:
         pkg: aptitude
         state: present
+        update_cache: true
 
     - name: Debian/Ubuntu | upgrade all packages (Debian)
       ansible.builtin.apt:
